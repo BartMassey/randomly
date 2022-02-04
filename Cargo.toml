@@ -1,0 +1,13 @@
+[package]
+name = "randomly"
+authors = ["Bart Massey <bart@cs.pdx.edu>"]
+version = "0.1.0"
+edition = "2021"
+description = "Macro to randomly choose an alternative."
+license = "MIT"
+repository = "https://github.com/BartMassey/randomly"
+readme = "README.md"
+categories = ["game-development", "rust-patterns", "simulation"]
+
+[dependencies]
+rand = "0.8"
