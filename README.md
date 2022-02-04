@@ -17,6 +17,14 @@ let n = randomly! {
 };
 ```
 
+To use this crate, add the following to your `Cargo.toml`
+
+```
+[dependencies.randomly]
+version = "0.1"
+git = "https://github.com/BartMassey/randomly"
+```
+
 Full crate [rustdoc](https://bartmassey.github.io/randomly/randomly/index.html)
 is available.
 
