@@ -5,15 +5,19 @@ Bart Massey 2022 (version {{version}})
 
 {{readme}}
 
-To use this crate, add the following to your `Cargo.toml`
-
+To use `{{crate}}`, add the following to your `Cargo.toml`
 ```
-[dependencies.randomly]
-version = "0.1"
-git = "https://github.com/BartMassey/randomly"
+[dependencies.{{crate}}]
+version = "{{version}}"
+git = "https://github.com/BartMassey/{{crate}}"
 ```
+(Do *not* use version 0.1.0 of `{{crate}}`, as it generates
+code exponentially sized in the number of actions, and could
+thus increase your compile times drastically.)
 
-Full crate [rustdoc](https://bartmassey.github.io/randomly/randomly/index.html)
+
+Full crate
+[rustdoc](https://bartmassey.github.io/{{crate}}/{{crate}}/index.html)
 is available.
 
 This crate is made available under the "{{license}}

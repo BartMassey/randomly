@@ -18,15 +18,19 @@ let n = randomly! {
 println!("chose {}", n);
 ```
 
-To use this crate, add the following to your `Cargo.toml`
-
+To use `randomly`, add the following to your `Cargo.toml`
 ```
 [dependencies.randomly]
-version = "0.1"
+version = "0.2.1"
 git = "https://github.com/BartMassey/randomly"
 ```
+(Do *not* use version 0.1.0 of `randomly`, as it generates
+code exponentially sized in the number of actions, and could
+thus increase your compile times drastically.)
 
-Full crate [rustdoc](https://bartmassey.github.io/randomly/randomly/index.html)
+
+Full crate
+[rustdoc](https://bartmassey.github.io/randomly/randomly/index.html)
 is available.
 
 This crate is made available under the "MIT
