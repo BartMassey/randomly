@@ -1,7 +1,7 @@
 ![Maintenance](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg)
 
 # randomly: randomly choose an alternative
-Bart Massey 2022 (version 0.2.0)
+Bart Massey 2022 (version 0.2.1)
 
 Macro to select a random block. This is useful in games,
 where taking random actions is common.

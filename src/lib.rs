@@ -15,6 +15,15 @@ println!("chose {}", n);
 ```
 */
 
+pub use rand;
+
+/// Randomly select a block to be executed. Blocks have
+/// equal probability of being selected (that is, selection
+/// is uniform random).
+///
+/// # Panics
+/// 
+/// Panics if zero blocks were provided.
 // Lots of ideas borrowed from here:
 // https://users.rust-lang.org/t/how-to-generate-in-macro/56774/6
 #[macro_export]
@@ -23,7 +32,7 @@ macro_rules! randomly {
         randomly!(@ $n + 1, ($($rest)*), (($n, $action), $($arms,)*))
     };
     (@ $n:expr, (), ($(($m:expr, $action:block),)*)) => {{
-        use rand::{thread_rng, Rng};
+        use $crate::rand::{thread_rng, Rng};
         let i = thread_rng().gen_range(0..$n);
         match i {
             $(x if x == $m => $action)*

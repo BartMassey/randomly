@@ -66,6 +66,15 @@
 <span id="65">65</span>
 <span id="66">66</span>
 <span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
 </pre><pre class="rust"><code><span class="doccomment">/*!
 Macro to select a random block. This is useful in games,
 where taking random actions is common.
@@ -83,6 +92,15 @@ println!(&quot;chose {}&quot;, n);
 ```
 */</span>
 
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">rand</span>;
+
+<span class="doccomment">/// Randomly select a block to be executed. Blocks have</span>
+<span class="doccomment">/// equal probability of being selected (that is, selection</span>
+<span class="doccomment">/// is uniform random).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Panics</span>
+<span class="doccomment">/// </span>
+<span class="doccomment">/// Panics if zero blocks were provided.</span>
 <span class="comment">// Lots of ideas borrowed from here:</span>
 <span class="comment">// https://users.rust-lang.org/t/how-to-generate-in-macro/56774/6</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
@@ -91,7 +109,7 @@ println!(&quot;chose {}&quot;, n);
         <span class="macro">randomly!</span>(@ <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">+</span> <span class="number">1</span>, ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>), ((<span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">action</span>), $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arms</span>,)<span class="kw-2">*</span>))
     };
     (@ <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>:<span class="ident">expr</span>, (), ($((<span class="macro-nonterminal">$</span><span class="macro-nonterminal">m</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">action</span>:<span class="ident">block</span>),)<span class="kw-2">*</span>)) =&gt; {{
-        <span class="kw">use</span> <span class="ident">rand</span>::{<span class="ident">thread_rng</span>, <span class="ident">Rng</span>};
+        <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::rand</span>::{<span class="ident">thread_rng</span>, <span class="ident">Rng</span>};
         <span class="kw">let</span> <span class="ident">i</span> <span class="op">=</span> <span class="ident">thread_rng</span>().<span class="ident">gen_range</span>(<span class="number">0</span>..<span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>);
         <span class="kw">match</span> <span class="ident">i</span> {
             $(<span class="ident">x</span> <span class="kw">if</span> <span class="ident">x</span> <span class="op">==</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">m</span> =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">action</span>)<span class="op">*</span>
