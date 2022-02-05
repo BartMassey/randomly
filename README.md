@@ -1,7 +1,7 @@
 ![Maintenance](https://img.shields.io/badge/maintenance-actively--developed-brightgreen.svg)
 
 # randomly: randomly choose an alternative
-Bart Massey 2022 (version 0.1.0)
+Bart Massey 2022 (version 0.2.0)
 
 Macro to select a random block. This is useful in games,
 where taking random actions is common.
@@ -9,12 +9,13 @@ where taking random actions is common.
 ## Examples
 
 ```rust
-use randomly::randomly;
+use randomly::*;
 
 let n = randomly! {
     { println!("hello"); 0 }
     { println!("goodbye"); 1 }
 };
+println!("chose {}", n);
 ```
 
 To use this crate, add the following to your `Cargo.toml`

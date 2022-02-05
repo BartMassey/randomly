@@ -5,33 +5,40 @@ where taking random actions is common.
 # Examples
 
 ```
-use randomly::randomly;
+use randomly::*;
 
 let n = randomly! {
     { println!("hello"); 0 }
     { println!("goodbye"); 1 }
 };
+println!("chose {}", n);
 ```
 */
 
-/// Given a list of blocks, randomly execute one of the blocks
-/// with equal probability for each.
+// Lots of ideas borrowed from here:
+// https://users.rust-lang.org/t/how-to-generate-in-macro/56774/6
 #[macro_export]
 macro_rules! randomly {
-    (@$n:expr, $cur:block $next:block $($rest:block)*) => {
-        if thread_rng().gen_range(0..$n) == 0 {
-            randomly!(@$n + 1, $next $($rest)*)
-        } else {
-            randomly!(@$n + 1, $cur $($rest)*)
-        }
+    (@ $n:expr, ($action:block $($rest:block)*), ($($arms:tt,)*)) => {
+        randomly!(@ $n + 1, ($($rest)*), (($n, $action), $($arms,)*))
     };
-    (@$_:expr, $cur:tt) => {
-        $cur
-    };
-    ($arg:block $($args:block)*) => {{
+    (@ $n:expr, (), ($(($m:expr, $action:block),)*)) => {{
         use rand::{thread_rng, Rng};
-        randomly!(@2u32, $arg $($args)*)
+        let i = thread_rng().gen_range(0..$n);
+        match i {
+            $(x if x == $m => $action)*
+            _ => panic!(),
+        }
     }};
+    ($($action:block)*) => {
+        randomly!(@ 0, ($($action)*), ())
+    };
+}
+
+#[test]
+fn test_randomly_inner() {
+    let k = randomly!(@ 0, ({0}), ());
+    assert_eq!(k, 0);
 }
 
 #[test]

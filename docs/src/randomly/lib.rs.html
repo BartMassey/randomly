@@ -59,6 +59,13 @@
 <span id="58">58</span>
 <span id="59">59</span>
 <span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
 </pre><pre class="rust"><code><span class="doccomment">/*!
 Macro to select a random block. This is useful in games,
 where taking random actions is common.
@@ -66,33 +73,40 @@ where taking random actions is common.
 # Examples
 
 ```
-use randomly::randomly;
+use randomly::*;
 
 let n = randomly! {
     { println!(&quot;hello&quot;); 0 }
     { println!(&quot;goodbye&quot;); 1 }
 };
+println!(&quot;chose {}&quot;, n);
 ```
 */</span>
 
-<span class="doccomment">/// Given a list of blocks, randomly execute one of the blocks</span>
-<span class="doccomment">/// with equal probability for each.</span>
+<span class="comment">// Lots of ideas borrowed from here:</span>
+<span class="comment">// https://users.rust-lang.org/t/how-to-generate-in-macro/56774/6</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">randomly</span> {
-    (@<span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">cur</span>:<span class="ident">block</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">next</span>:<span class="ident">block</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">block</span>)<span class="kw-2">*</span>) =&gt; {
-        <span class="kw">if</span> <span class="ident">thread_rng</span>().<span class="ident">gen_range</span>(<span class="number">0</span>..<span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>) <span class="op">==</span> <span class="number">0</span> {
-            <span class="macro">randomly!</span>(@<span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">+</span> <span class="number">1</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">next</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>)
-        } <span class="kw">else</span> {
-            <span class="macro">randomly!</span>(@<span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">+</span> <span class="number">1</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">cur</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>)
-        }
+    (@ <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>:<span class="ident">expr</span>, (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">action</span>:<span class="ident">block</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">block</span>)<span class="kw-2">*</span>), ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arms</span>:<span class="ident">tt</span>,)<span class="kw-2">*</span>)) =&gt; {
+        <span class="macro">randomly!</span>(@ <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">+</span> <span class="number">1</span>, ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>), ((<span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">action</span>), $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arms</span>,)<span class="kw-2">*</span>))
     };
-    (@<span class="macro-nonterminal">$</span><span class="kw">_</span>:<span class="macro-nonterminal">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">cur</span>:<span class="ident">tt</span>) =&gt; {
-        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">cur</span>
-    };
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">block</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">block</span>)<span class="kw-2">*</span>) =&gt; {{
+    (@ <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>:<span class="ident">expr</span>, (), ($((<span class="macro-nonterminal">$</span><span class="macro-nonterminal">m</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">action</span>:<span class="ident">block</span>),)<span class="kw-2">*</span>)) =&gt; {{
         <span class="kw">use</span> <span class="ident">rand</span>::{<span class="ident">thread_rng</span>, <span class="ident">Rng</span>};
-        <span class="macro">randomly!</span>(@<span class="number">2u32</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>)<span class="kw-2">*</span>)
+        <span class="kw">let</span> <span class="ident">i</span> <span class="op">=</span> <span class="ident">thread_rng</span>().<span class="ident">gen_range</span>(<span class="number">0</span>..<span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>);
+        <span class="kw">match</span> <span class="ident">i</span> {
+            $(<span class="ident">x</span> <span class="kw">if</span> <span class="ident">x</span> <span class="op">==</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">m</span> =&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">action</span>)<span class="op">*</span>
+            <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(),
+        }
     }};
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">action</span>:<span class="ident">block</span>)<span class="kw-2">*</span>) =&gt; {
+        <span class="macro">randomly!</span>(@ <span class="number">0</span>, ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">action</span>)<span class="kw-2">*</span>), ())
+    };
+}
+
+<span class="attribute">#[<span class="ident">test</span>]</span>
+<span class="kw">fn</span> <span class="ident">test_randomly_inner</span>() {
+    <span class="kw">let</span> <span class="ident">k</span> <span class="op">=</span> <span class="macro">randomly!</span>(@ <span class="number">0</span>, ({<span class="number">0</span>}), ());
+    <span class="macro">assert_eq!</span>(<span class="ident">k</span>, <span class="number">0</span>);
 }
 
 <span class="attribute">#[<span class="ident">test</span>]</span>

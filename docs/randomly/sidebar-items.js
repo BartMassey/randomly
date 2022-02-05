@@ -1,1 +1,1 @@
-initSidebarItems({"macro":[["randomly","Given a list of blocks, randomly execute one of the blocks with equal probability for each."]]});
+initSidebarItems({"macro":[["randomly",""]]});
